@@ -1,0 +1,606 @@
+1)
+
+program ejercicio1;
+uses crt;
+var
+   f,c: integer;
+
+function ftoc(fah: integer):integer;
+begin
+ ftoc:=round(5/9*(fah-32.0));
+end;
+
+procedure pedirvalor(var x:integer);
+begin
+ clrscr;
+ write('ingrese la temperatura en fahrenheit: ');
+ readln(x);
+end;
+
+procedure calcular(var y:integer);
+begin
+ clrscr;
+ writeln('conversion de temperaturas:');
+ writeln('fahrenheit: ',y:5);
+ writeln('celsius: ',ftoc(y):5);
+end;
+
+begin
+ pedirvalor(f);
+ calcular(f);
+
+ repeat until keypressed;
+end.
+
+2)
+
+program ejercicio2;
+uses crt;
+var
+   a,b:integer;
+
+procedure control(var x,y:integer);
+begin
+ if y=0 then
+  writeln('division por cero')
+ else
+  writeln('el resultado es: ',x/y)
+end;
+
+begin
+clrscr;
+ write('ingrese el primer numero: '); readln(a);
+ write('ingrese el segundo numero: '); readln(b);
+
+ control(a,b);
+
+ repeat until keypressed;
+end.
+
+3)
+
+program ejercicio3;
+uses crt;
+var
+   lado,altura,areat,vol: double;
+
+function area(l,h:double):double;
+begin
+ area:=l*h;
+end;
+
+procedure calculos(var l,h:double);
+begin
+ areat:=area(l,l)*2+area(l,h)*4;
+ vol:=area(l,l)*h;
+ writeln('el area del prisma es: ',areat);
+ writeln('el volumen del prisma es: ',vol);
+end;
+
+begin
+ clrscr;
+
+ write('ingrese el lado: ');readln(lado);
+ write('ingrese la altura: ');readln(altura);
+
+ calculos(lado,altura);
+
+ repeat until keypressed;
+end.
+
+4)
+
+program ejercicio4;
+uses crt;
+var
+   x: char;
+
+procedure control(var letra:char);
+begin
+ case letra of
+  '0'..'9': writeln('el caracter es un numero')
+ else
+  writeln('el caracter es una letra')
+ end;
+end;
+
+begin
+clrscr;
+
+write('ingrese un caracter: ');readln(x);
+control(x);
+
+readkey;
+
+end.
+
+5)
+
+program ejercicio5;
+uses crt;
+var
+   dic: array [0..15] of string;
+   ne: array [0..100] of string;
+   palabra: array [0..20] of char;
+   letra: char;
+   i,pos: integer;
+
+procedure buscar(var pal: char);
+begin
+     for  i:=0 to 15 do
+      begin
+       if pal<>dic[i] then
+        begin
+         ne[pos]:=pal;
+         pos:=pos+1;
+        end;
+      end;
+end;
+
+procedure mostrar;
+begin
+ writeln('palabras no encontradas');
+  for i:=0 to pos  do
+   writeln(ne[i]);
+end;
+
+begin
+clrscr;
+
+i:=0;
+pos:=0;
+
+writeln('Ingrese la frase');
+write(':'); read(letra);
+
+while (letra <>#13) do
+begin
+
+ while (letra <> #32) do
+  begin
+   palabra[i]:=letra;
+   i:=i+1;
+   read(letra);
+  end;
+
+ buscar(palabra);
+end;
+
+writeln;
+mostrar();
+
+readkey;
+end.
+
+6)
+
+program ejercicio6;
+uses crt;
+var
+   letra: char;
+   c: integer;
+
+procedure control(var l: char);
+begin
+ while l<>#13 do
+  begin
+   case l of
+    'a','e','i','o','u': c:=c+1;
+   end;
+   read(l);
+  end;
+ writeln;
+ writeln;
+ write('la cantidad de vocales es: ',c);
+end;
+
+begin
+clrscr;
+
+writeln('ingrese una frase');
+writeln;
+write(':'); read(letra);
+
+control(letra);
+
+readkey;
+end.
+
+7)
+
+program ejercicio7;
+uses crt;
+var
+   dd,mm,aaaa: integer;
+   bic: boolean;
+   
+procedure biciesto(var a:integer);
+begin
+ if (a mod 4) = 0 and (a mod 100) <> 0 and (a mod 400)=0 then
+  bic:=true
+ else
+  bic:=false
+end;
+
+function control(d,m: integer):boolean;
+begin
+ if d > 30 and (m = 4 or m = 6 or m = 9 or m = 11) then
+  control:=false
+ else
+  control:=true
+ if m > 12 or m < 1 or d > 31 or d < 1 then
+  control:=false
+ else
+  control:=true
+end;
+
+procedure calculo(var d,m,a: integer);
+begin
+ biciesto(a);
+ if m = 2 then
+   if bic = true
+     if d < 29 then
+       writeln('dia siguiente: ',d+1,'/',m,'/',a)
+     else
+       writeln('dia siguiente: ',1,'/',m+1,'/',a)
+   else
+     if d < 28 then
+       writeln('dia siguiente: ',1,'/',m+1,'/',a)
+     else
+       writeln('dia siguiente: ',d+1,'/',m,'/',a)
+ else
+ case m of
+   '1','3','5','7','8','10': if d < 31 then
+                               writeln('dia siguiente: ',d+1,'/',m,'/',a)
+                             else
+                               writeln('dia siguiente: ',1,'/',m+1,'/',a)
+   '4','6','9','11': if d < 30 then
+                       writeln('dia siguiente: ',d+1,'/',m,'/',a)
+                     else
+                       writeln('dia siguiente: ',1,'/',m+1,'/',a)
+   '12': if d < 31 then
+           writeln('dia siguiente: ',d+1,'/',m,'/',a)
+         else
+           writeln('dia siguiente: ',1,'/',1,'/',a+1)
+ end;
+end;
+
+begin
+clrscr;
+
+write('ingrese el dia: '); readln(dd);
+write('ingrese el mes: '); readln(mm);
+write('ingrese el año: '); readln(aaaa);
+
+while control(dd,mm,aaaa) = false do
+begin
+ writeln;
+ writeln('fecha incorrecta, ingrese una fecha valida');
+ writeln;
+ write('ingrese el dia: '); readln(dd);
+ write('ingrese el mes: '); readln(mm);
+ write('ingrese el año: '); readln(aaaa);
+end; 
+
+writeln;
+calculo(dd,mm,aaaa);
+
+readkey;
+
+end.
+
+8)
+
+program ejercicio8;
+uses crt;
+var
+   serie,pi: double;
+   n,c: integer;
+
+procedure calcpi(var num:integer);
+begin
+  serie:=0;
+  c:=0;
+  for i:=1 to num do
+  begin
+    serie:=serie+((1/(i+c))*(-1)^(i-1));
+    c:=c+2;
+  end;
+  pi:=serie*4;
+  writeln('el numero pi aproximado a ',n,' terminos es: ',pi);
+end;
+
+function validar(num: integer):boolean;
+begin
+  if num < 20 or num > 1000 then
+  begin
+    validar:=false;
+    writeln('valor no permitido');
+  end
+  else
+    validar:=true
+end;
+
+begin
+clrscr;
+
+write('ingrese un numero entre 20 y 1000: '); readln(n);
+writeln;
+
+if validar(n) = true then
+  calcpi(n);
+
+readkey;
+
+end.
+
+9)
+
+program ejercicio9;
+uses crt;
+var
+   r: double;
+   n, c, intra: integer;
+
+function raiz(num:integer):boolean;
+begin
+ if n > 0 then
+ begin
+  r:=sqrt(num);
+  raiz:=true;
+ end
+ else
+  raiz:=false
+  
+end;
+
+procedure calculo(var num: integer, ra:double);
+begin
+ intra:=int(ra);
+ for i:=num downto intra do
+  if (i mod intra) = 0 then
+   c:=c+1
+ end;
+ if c = 2 then
+  writeln('el numero ',n,' es primo')
+ else
+  writeln('el numero ',n,' no es primo')
+end;
+
+begin
+clrscr;
+
+write('ingrese un numero natural: '); readln(n);
+writeln;
+
+if raiz(n) = true then
+ calculo(n,r)
+else
+ writeln('no es un numero natural')
+
+readkey;
+end.
+
+10)
+
+program ejercicio10;
+uses crt;
+var
+   letra, maycif, mencif, masvcif, ntemp: char;
+   nc, nmaycif, nmencif, temp, nmasvcif: integer;
+   num: array [0..9] of char;
+
+procedure ingreso;
+begin
+ nc:=0;
+ write('ingrese un numero de hasta 10 cifras: '); read(letra);
+ if letra <> #13 then
+  while letra <> #13 or nc = 10 do
+  begin
+   case letra of
+    '0'..'9': begin
+               numero[nc]:=letra;
+               nc:=nc+1;
+              end;
+   else
+   begin
+    writeln('no se ingreso un numero');
+    writeln('ingrese un numero para continuar');
+   end;
+   end;
+   read(letra);
+  end;
+ else
+  writeln('no se proceso nada')
+end;
+
+function capicua(num: array of char):boolean;
+begin
+ for i:=0 to int(nc/2) do
+  if num[i] <> num[nc-i] then
+   capicua:=false
+  else
+   capicua:=true
+end;
+
+function contar(n: array of char, l: char):integer;
+var c:integer;
+begin
+ for i:=0 to nc do
+  if n[i]=l then
+   c:=c+1
+ contar:=c;
+end;
+
+procedure mayorcif;
+begin
+ nmaycif:=contar(num,num[0]);
+ maycif:=num[0];
+ for i:=1 to nc do
+ begin
+  temp:=contar(num,num[i]);
+  ntemp:=num[i];
+  if temp > nmaycif then
+  begin
+   nmaycif:=temp;
+   maycif:=num[i];
+  end;
+ end;
+ writeln('la cifra mas grande ',mascif,' se repite ',nmascif,' veces');
+end;
+
+procedure menorcif;
+begin
+ nmencif:=contar(num,num[0]);
+ mencif:=num[0];
+ for i:=1 to nc do
+ begin
+  temp:=contar(num,num[i]);
+  ntemp:=num[i];
+  if temp < nmencif then
+  begin
+   nmencif:=temp;
+   mencif:=num[i];
+  end;
+ end;
+ writeln('la cifra mas chica ',mencif,' se repite ',nmencif,' veces');
+end;
+
+procedure masv;
+begin
+ nmasvcif:=contar(num[0],num[0]);
+ masvcif:=num[0];
+ for i:=1 to nc do
+ begin
+  temp:=contar(num,num[i]);
+  if temp > nmasvcif then
+  begin
+   nmasvcif:=temp;
+   masvcif:=num[i];
+  end;
+ end;
+ writeln('la cifra que mas se repite ',masvcif,' con ',nmasvcif,' repeticiones');
+end;
+
+begin
+clrscr;
+
+ingreso;
+
+if capicua(num)=true then
+ writeln('el numero es capicua')
+else
+ writeln('el numero no es capicua');
+
+mayorcif;
+menorcif;
+masv;
+
+readkey;
+end.
+
+11)
+
+program ejercicio11;
+uses crt;
+var
+ bin1,bin2: array [0..20] of char;
+ sum: array [0..21] of char;
+ nc1,nc2, nr: integer;
+ res: char;
+
+
+procedure suma(var c1,c2: char; n:integer);
+begin
+ if (c1='1' and c2='1' and res='1') then
+ begin
+  res:=1;
+  sum[n]:=1;
+ end
+ else
+  if (c1='1' and c2='1' and res='0') or (c1='1' and c2='0' and res='1') or (c1='0' and c2='1' and res='1') then
+  begin
+   res:=1;
+   sum[n]:=0;
+  end
+  else
+    if (c1='0' and c2='1' and res='0') or (c1='1' and c2='0' and res='0') or (c1='0' and c2='0' and res='1') then
+    begin
+     res:=0;
+     sum[n]:=1;
+    end
+    else
+    begin
+     res:=0;
+     sum[n]:=0;
+    end;
+end;
+
+procedure ingreso(var numbin: array [0..20] of char; lon: integer);
+var
+ letra: char;
+
+begin
+ lon:=0;
+ write('ingrese un numero binario de hasta 20 cifras: '); read(letra);
+ if letra <> #13 then
+  while letra <> #13 or lon = 20 do
+  begin
+   case letra of
+    '0'..'1': begin
+               numbin[lon]:=letra;
+               lon:=lon+1;
+              end;
+   else
+   begin
+    writeln('no se ingreso un numero binario');
+    writeln('ingrese un numero binario para continuar');
+   end;
+   end;
+   read(letra);
+  end;
+ else
+  writeln('no se proceso nada')
+end;
+
+procedure resultado;
+begin
+ nr:=21;
+ while (nc1 > 0 or nc2 > 0) do
+ begin
+  suma(bin1[nc1],bin2[nc2],nr);
+  nc1:=nc1-1;
+  nc2:=nc2-1;
+  nr:=nr-1;
+ end;
+ if nc1=0 then
+  while nc2>0 do
+   begin
+    suma(0,bin2[nc2],nr);
+    nc2:=nc2-1;
+    nr:=nr-1;
+   end;
+ else
+  while nc1>0 do
+   begin
+    suma(bin1[nc1],0,nr);
+    nc1:=nc1-1;
+    nr:=nr-1;
+   end;
+ end;
+end;
+
+begin
+clrscr;
+
+ingreso(bin1,nc1);
+ingreso(bin2,nc2);
+
+resultado;
+
+for i:=nr to 21 do
+ write(sum[i])
+
+readkey();
+
+end.

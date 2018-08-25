@@ -1,0 +1,141 @@
+TP1 - Secuencial
+
+1)
+
+10 print "Ejercicio 1"
+20 input "Ingrese el número:";n
+30 if n = 0 then goto 100
+35 if (int(n/2)*2) = n then
+40 print "Número PAR"
+50 else
+60 print "Número IMPAR"
+65 end if
+70 goto 20
+100 print "Hasta pronto!"
+
+2)
+
+10 print "Ejercicio 2"
+20 input "Ingrese el número: ";n
+30 fact=1
+40 for i=1 to n
+50  fact=fact*i
+60 next
+70 print fact
+
+3) 
+
+10 print "Ejercicio 3"
+20 input "Ingrese el número: ";n
+30 fact=1
+40 suma=1
+50 for i=1 to n
+60  fact=fact*i
+70  suma=suma+(1/fact)
+80 next
+90 print suma
+
+4)
+
+10 print "Ejercicio 4"
+20 input "Ingrese longitud: ";n
+30 DIM cad$(n,2)
+40 for i=1 to 2
+45 print "Palabra ",i
+50  for j=1 to n
+55   input "ingrese una letra o presione enter para salir: ";letra
+60   if letra=[ascii del enter] then goto 70 else goto 65
+65   cad$(j,i)=letra
+70  next
+80 next
+90 for i=1 to n
+100 if cad$(i,1)<>cad$(i,2) then goto 150
+120 next
+130 print "son iguales"
+140 goto 160
+150 print "son distintos"
+160 print " "
+
+5)
+
+10 print "Ejercicio 5"
+20 input "Ingrese largo: ";l
+30 input "Ingrese alto: ";a
+40 area=l*a
+50 areacg=3.14*a*a/2
+60 areacc=3.14*(a/2)*(a/2)/2
+70 areat=area+areacg+areacc
+80 print "area total ", areat
+
+6)
+
+10 print "Ejercicio 6"
+20 input "Ingrese una escala (k, c o f), o 's' para salir: "; escala
+30 if escala=k then goto 100 else goto 40
+40 if escala=c then goto 200 else goto 50
+50 if escala=f then goto 300 else goto 60
+60 if escala=s then goto 1000 else goto 20
+
+100 input "ingrese temperatura en Kelvin: "; k
+110 c=k-273.15
+120 f=c*1.8+32
+130 print "temperatura en Fahrenheit ", f
+140 print "temperatura en Celsius ", c
+150 goto 20
+
+200 input "ingrese temperatura en Celsius: "; c
+210 k=c+273.15
+220 f=c*1.8+32
+230 print "temperatura en Kelvin ", k
+240 print "temperatura en Fahrenheit ", f
+240 goto 20
+
+300 input "ingrese temperatura en Fahrenheit: "; f
+310 c=(f-32)/1.8
+320 k=c+273.15
+330 print "temperatura en Celsius ", c
+340 print "temperatura en Kelvin ", k
+350 goto 20
+
+1000 print ""
+
+7)
+
+10 print "Ejercicio 7"
+20 input "ingrese la coordenada x1: "; x1
+30 input "ingrese la coordenada y1: "; y1
+40 input "ingrese la coordenada x2: "; x2
+50 input "ingrese la coordenada y2: "; y2
+60 input "ingrese la coordenada x3: "; x3
+70 input "ingrese la coordenada y3: "; y3
+
+100 l1=((x2-x1)^2+(y2-y1)^2)^(1/2)
+110 l2=((x3-x2)^2+(y3-y2)^2)^(1/2)
+120 lt=l1+l2
+130 print "longitud de la poligonal: ", lt
+
+8)
+
+10 print "Ejercicio 8"
+20 input "ingrese el primer numero: "; m
+30 input "ingrese el segundo numero: "; n
+40 if m < 0 then goto 20 else goto 50
+50 if n < 0 then goto 30 else goto 60
+60 if m = 0 then goto 100 else goto 70
+70 if n = 0 then goto 110 else goto 200
+
+100 print "mcd( ",m," , ",n, ") es ",n
+110 goto 1000
+120 print "mcd( ",m," , ",n, ") es ",m
+130 goto 1000
+
+200 if m < n then goto 210 else goto 240
+210 t = m
+220 m = n
+230 n = t
+240 t = n
+250 n = m-(INT(m/n)*n)
+260 m = t
+270 goto 60
+
+1000 print "salida"
