@@ -1,0 +1,328 @@
+1)
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+(define inverso
+        (lambda (ls)
+		(if (null? ls)
+                    '()
+                    (concatenar (inverso (cdr ls)) (list (car ls)))
+                )
+        )
+ )
+
+(define concat-inv
+        (lambda (l1 l2)
+                (if (null? l2)
+                     l1
+                    (concatenar l1 (inverso l2))
+                )
+        )
+ )
+
+2)
+
+(define pert
+        (lambda (x l)
+                (if (null? l)
+                    #f
+                    (if (eqv? x (car l))
+                        #t
+                        (pert x (cdr l))
+                    )
+                )
+        )
+ )
+
+(define pertenece
+        (lambda (x l1 l2)
+                (if (and (pert x l1) (pert x l2))
+                    #t
+                    #f
+                )
+        )
+ )
+
+3)
+
+(define pertenece
+        (lambda (x l)
+                (if (null? l)
+                    #f
+                    (if (eqv? x (car l))
+                        #t
+                        (pertenece x (cdr l))
+                    )
+                )
+        )
+ )
+
+(define cant-izq-aux
+        (lambda (x l)
+                (if (null? l)
+                    1
+                    (if (eqv? x (car l))
+                        0
+                        (+ 1 (cant-izq-aux x (cdr l)))
+                    )
+                )
+        )
+ )
+
+(define cant-izq
+        (lambda (x l)
+                (if (pert x l)
+                    (cant-izq-aux x l)
+                    '()
+                )
+        )
+ )
+
+4)
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+(define addif
+        (lambda (x l)
+                (if (pert x l)
+                    l
+                    (concatenar l (list x))
+                )
+        )
+ )
+
+5)
+
+(define fechap
+        (lambda (d m a)
+                (if (and (< m 13) (< d 32))
+                    (cond ((= m 2) (if (< d 29) #t #f))
+                          ((or (= m 4) (= m 6) (= m 9) (= m 11)) (if (< d 31) #t #f))
+                          ((or (= m 1) (= m 3) (= m 5) (= m 7) (= m 8) (= m 10) (= m 12)) (if (< d 32) #t #f))
+                    )
+                    #f
+                )
+        )
+ )
+
+6)
+
+(define toagrupar
+        (lambda (x l)
+                (if (null? l)
+                    (list x)
+                    (if (eqv? x (car l))
+                        (cons (car l) l)
+                        (cons (car l) (toagrupar x (cdr l)))
+                    )
+                )
+        )
+ )
+
+(define agrupar
+        (lambda (l1 l2)
+                (if (list? l1)
+                    (toagrupar l2 l1)
+                    (toagrupar l1 l2)
+                )
+        )
+ )
+
+7)
+
+(define nodo?
+        (lambda (x)
+                (if (or (number? x) (symbol? x))
+                    #t
+                    #f
+                )
+        )
+ )
+
+(define get-profundidad
+        (lambda (lista)
+                (cond ((null? lista) 0)
+                      ((list? (car lista)) (max (+ 1 (get-profundidad (car lista))) (get-profundidad (cdr lista))))
+                      ((nodo? (car lista)) (max 0 (get-profundidad (cdr lista))))         
+                )
+        )
+ )
+
+8)
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+(define nodo?
+        (lambda (x)
+                (if (or (number? x) (symbol? x))
+                    #t
+                    #f
+                )
+        )
+ )
+
+(define aplanar
+        (lambda (lista)
+                (cond ((null? lista) '())
+                      ((list? (car lista)) (concatenar (aplanar (car lista)) (aplanar (cdr lista))))
+                      ((nodo? (car lista)) (cons (car lista) (aplanar (cdr lista))))
+                )
+        )
+ )
+
+9)
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+(define ultimo
+        (lambda (lista)
+                (if (null? lista)
+                    '()
+                    (if (null? (cdr lista))
+                        (car lista)
+                        (ultimo (cdr lista))
+                    )
+                )
+        )
+ )
+
+(define elim-ulti
+        (lambda (lista)
+                (if (null? lista)
+                    '()
+                    (if (null? (cdr lista))
+                        '()
+                        (cons (car lista) (elim-ulti (cdr lista)))
+                    )
+                )
+        )
+ )
+
+(define rotar
+        (lambda (x l)
+                (if (equal? x 'izquierda)
+                    (concatenar (cdr l) (list (car l)))
+                    (if (equal? x 'derecha)
+                        (concatenar (list (ultimo l)) (elim-ulti l))
+                        '()
+                    )
+                )
+        )
+ )
+
+10)
+
+(define cuadrados
+        (lambda (lista)
+                (if (null? lista)
+                    '()
+                    (map (lambda (x) (* x x)) lista)
+                )
+        )
+ )
+
+11)
+
+(define pertenece
+        (lambda (x l)
+                (if (null? l)
+                    #f
+                    (if (eqv? x (car l))
+                        #t
+                        (pertenece x (cdr l))
+                    )
+                )
+        )
+ )
+
+(define resta-listas
+        (lambda (l1 l2)
+                (if (null? l1)
+                    '()
+                    (if (null? l2)
+                        l1
+                        (if (pertenece (car l1) l2)
+                            (resta-listas (cdr l1) l2)
+                            (cons (car l1) (resta-listas (cdr l1) l2))
+                        )
+                    )
+                )
+        )
+ )
+
+12)
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+(define pertenece
+        (lambda (x l)
+                (if (null? l)
+                    #f
+                    (if (eqv? x (car l))
+                        #t
+                        (pertenece x (cdr l))
+                    )
+                )
+        )
+ )
+
+(define suma-listas
+        (lambda (l1 l2)
+                (if (null? l2)
+                    l1
+                    (if (pertenece (car l2) l1)
+                        (suma-listas l1 (cdr l2))
+                        (suma-listas (concatenar l1 (list (car l2))) (cdr l2))                        
+                    )
+                )
+        )
+ )
+
+13)
+
+(define altura
+        (lambda (lista)
+                (if (null? lista)
+                    0
+                    (if (list? (car lista))
+                         (max (+ 1 (altura (car lista))) (+ 1 (altura (cdr lista))))
+                         (max 0 (altura (cdr lista)))
+                    )
+                )
+        )
+ )  

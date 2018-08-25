@@ -1,0 +1,46 @@
+Ejercicio 1
+
+S->0|1|2|3|4|5|6|7|8|9  
+
+Ejercicio 2
+
+S->oS|o
+
+Ejercicio 3
+
+S->1B|2B|3B|4B|5B|6B|7B|8B|9B
+B->1B|2B|3B|4B|5B|6B|7B|8B|9B|0B|E
+
+Ejercicio 4
+
+S->-A|B
+A->1B|2B|3B|4B|5B|6B|7B|8B|9B|0.D
+B->1C|2C|3C|4C|5C|6C|7C|8C|9C|0.D
+C->1C|2C|3C|4C|5C|6C|7C|8C|9C|OC|.D|E
+D->1D|2D|3D|4D|5D|6D|7D|8D|9D|0D|E
+
+Ejercicio 5
+
+S->1A
+A->1A|0A|E
+
+Ejercicio 6
+
+a)
+
+A->aAb|E
+B->aBbb|E
+
+b)
+
+X->a|c
+S->aScc|E
+A->aaAc|E
+
+c)
+
+S->aSa|bSb|cSc|E
+
+d)
+
+S->aSa|E

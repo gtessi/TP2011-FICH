@@ -1,0 +1,190 @@
+Examen Final 7/5/2011
+
+Prolog
+
+Dada una lista de letras, y un conjunto de palabras (a modo de diccionario) encontrar todas las posibles maneras de combinar dichas letras para formar listas de palabras del diccionario.
+
+La forma de declarar las palabras del diccionario queda a criterio del alumno, se puede usar el ejemplo.
+
+La forma de declarar la lista de letras queda a criterio del alumno, se puede usar el ejemplo.
+
+ejermplo:
+
+dic(hola).
+dic(pan).
+dic(mar).
+dic(arena).
+dic(pinza).
+dic(cortina).
+dic(mochila).
+dic(tren).
+dic(perro).
+dic(gato).
+dic(raton).
+dic(ave).
+dic(auto).
+dic(ventana).
+dic(puerta).
+dic(museo).
+dic(libro).
+dic(en).
+
+lista([a, b, c, d, f, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]).
+
+
+
+encontrar(R).
+
+R = [hola, tren] ;
+R = [hola, en] ;
+R = [pan, museo] ;
+R = [pan, libro] ;
+R = [mar, en] ;
+R = [pinza, museo] ;
+R = [cortina] ;
+R = [mochila, tren] ;
+R = [mochila, en] ;
+R = [tren, hola] ;
+R = [tren, mochila] ;
+R = [gato, en] ;
+R = [raton] ;
+R = [ave, libro] ;
+R = [auto, en] ;
+R = [puerta] ;
+R = [museo, pan] ;
+R = [museo, pinza] ;
+R = [libro, pan] ;
+R = [libro, ave] ;
+R = [libro, en] ;
+R = [en, hola] ;
+R = [en, mar] ;
+R = [en, mochila] ;
+R = [en, gato] ;
+R = [en, auto] ;
+R = [en, libro] ;
+false.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+diclista([hola,pan,mar,arena,pinza,cortina,mochila,tren,perro,gato,raton,ave,auto,ventana,puerta,museo,libro,en]).
+letralista([a, b, c, d, f, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]).
+
+pertenece(X,[X|_]):-!.
+pertenece(X,[_|L]):-pertenece(X,L).
+
+longitud([],0).
+longitud([_|T],N):-longitud(T,N0), N is N0 + 1.
+
+elimina(_,[],[]):- !.
+elimina([X|C],[Y|D],[Y|R]):- X\=Y, elimina([X|C],D,R).
+elimina([X|C],[X|D],R):- elimina(C,D,R).
+
+combinatoria(0,_,[]).
+combinatoria(N,[X|T],[X|Comb]):- N>0, N1 is N-1, combinatoria(N1,T,Comb).
+combinatoria(N,[_|T],Comb):- N>0, combinatoria(N,T,Comb).
+
+enc_aux([]).
+enc_aux(ListaLetras,[Pal1|Resto]):- diclista(ListaPalabras), longitud(ListaLetras,N), N>=X, combinatoria(X,ListaLetras,Pal1),
+                                       pertenece(Pal1,ListaPalabras), string_to_list(Pal1,ListaCar),
+                                       eliminar(ListaCar,ListaLetras,ListaLetrasNueva), enc_aux(ListaLetrasNueva,Resto).
+
+encontrar(R):- letralista(L), enc_aux(L,R).
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+Funcional
+
+Ordenar por Peso ASCII
+
+Se desea crear una función que reciba como parámetro una lista de strings y devuelva una lista con las cadenas ordenadas por su peso ASCII. Ej:
+
+> (ordenar '("moto" "auto" "casa" "juego" "aire")) --> ("auto" "casa" "moto" "aire" "juego")
+
+El peso ascii de una palabra se calculará como la suma de los valores de cada uno de los caracteres que la componen. Ejemplo:
+
+(pesopalabra "casa") --> 408
+a = 97
+c = 99
+s = 115 ==> 99 + 97 + 115 + 97 = 408
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+(define suma
+        (lambda (l)
+                (if (null? l)
+                    0
+                    (+ (car l) (suma (cdr l)))
+                )
+        )
+ )
+
+(define pesopalabra
+        (lambda (x)
+                (let* ((palabra (string->list x))
+                       (lista (map char->integer palabra))                                        
+                      )
+                      (suma lista)
+                )
+        )
+ )
+
+(define-struct par (pal peso))
+
+(define componer
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (let* ((palabra (car l))
+                           (peso (pesopalabra palabra))
+                          )
+                          (if (null? l)
+                              '()
+                              (cons (make-par palabra peso) (componer (cdr l)))
+                          )
+                    )
+                )
+        )
+ )
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+(define minS
+       (lambda (l)
+               (if (null? l)
+                   '()
+                   (if (null? (cdr l))
+                       (par-peso (car l))
+                       (if (<= (par-peso (car l)) (minS (cdr l)))
+                           (par-peso (car l))
+                           (minS (cdr l))
+                       )
+                   )
+               )
+       )
+ )
+
+(define ordenar-struct
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (if (<= (par-peso (car l)) (minS l))
+                        (concatenar (list (par-pal (car l))) (ordenar-struct (cdr l)))
+                        (ordenar-struct (concatenar (cdr l) (list (par-pal (car l)))))
+                    )
+                )
+        )
+ )
+
+(define ordenar
+        (lambda (l)
+                (ordenar-struct (componer l))
+        )
+ )
+

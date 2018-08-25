@@ -1,0 +1,143 @@
+1)
+
+a) (let ((multi (/ (* 7 a) b))) (+ multi (/ (* 3 a) b) multi)))
+
+b) (let ((lista (list a b c))) (cons (car lista) (cdr lista)))
+
+2)
+
+(let ((x 9))
+     (* x (let ((x (/ x 3)))
+               (+ x x)
+          )
+     )
+ )
+
+Resultado: 54
+
+3)
+
+a)
+
+(let ((x 'a) (y 'b))
+     (list (let ((xx 'c))
+                (cons xx y)
+           )
+           (let ((yy 'd))
+                (cons x yy)
+           )
+     )
+ )
+
+b)
+
+(let ((x '((a b) c)))
+     (cons (let ((xx (cdr x)))
+                (car xx)
+           )
+           (let ((aa (car x)))
+                (cons (let ((yy (cdr aa)))
+                           (car yy)
+                      )
+                      (cons (let ((zz (car aa)))
+                                 zz
+                            )
+                            (cdr aa)
+                      )
+                )
+           )
+     )
+ )
+
+4)
+
+a)
+
+(let ((f (lambda (x) x)))
+     (f 'a)
+ )
+ = a
+
+b)
+
+(let ((f (lambda x x))) 'x es una lista
+     (f 'a)
+ )
+ = (a) (Genera una lista sin importar la cantidad de parametros)
+
+c)
+
+(let ((f (lambda (x . y) x)))
+     (f 'a)
+ )
+ = a
+
+d)
+
+(let ((f (lambda (x . y) y)))
+     (f 'a)
+ )
+ = ()
+
+5)
+
+(define shorter
+        (lambda (x y)
+                (if (or (< (length x) (length y)) (= (length x) (length y)))
+                x
+                y
+                )
+        )
+ )
+
+6)
+
+(define area
+        (lambda (x)
+                (* (* x x) 3.14)
+        )
+ )
+
+7)
+
+(define perimetro
+        (lambda (x)
+                (* (* 2 x) 3.14)
+        )
+ )
+
+8)
+
+(define circlestuff
+        (lambda (x)
+                (list (* (* x x) 3.14) (* (* 2 x) 3.14))
+        )
+ )
+
+9)
+
+(define distance2d
+        (lambda (x y)
+                (sqrt (+ (expt (- (car y) (car x)) 2) (expt (- (cadr y) (cadr x)) 2)))
+        )
+ )
+
+10)
+
+(define distance2d
+        (lambda (x y)
+                (sqrt (+ (expt (- (car y) (car x)) 2) (expt (- (cadr y) (cadr x)) 2)))
+        )
+ )
+
+(define proximo
+        (lambda (x lista)
+                (if (null? (cdr lista))
+                    (distance2d x (car lista))
+                    (if (<= (distance2d x (car lista)) (proximo x (cdr lista)))
+                        (distance2d x (car lista))
+                        (proximo x (cdr lista))
+                    )
+                )
+        )
+ )

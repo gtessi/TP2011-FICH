@@ -1,0 +1,137 @@
+1)
+
+p(árbol).
+p(animal).
+p(base).
+p(caramelo).
+p(caracol).
+p(curso).
+p(dedo).
+p(dedal).
+p(diferencia).
+p(difernecial).
+
+p(diferente).
+p(elefante).
+p(electricidad).
+p(esfera).
+p(fenómeno).
+p(fiera).
+p(guante).
+p(hormiga).
+p(hormigón).
+p(irlanda).
+
+buscar2([],[]).
+buscar2([X|L],[X|L1]):-buscar(L,L1).
+buscar2([_|L],[?|L1]):-buscar(L,L1).
+buscar2([X|L],[*|L1]):-buscar(L,[*|L1]).
+buscar2([X|L],[*|L1]):-buscar(L,L1).
+buscar2([],[*]).
+
+buscar(A,L):- findall(X,p(X), L1), procesa(A,L1, L).
+
+procesa(A, [C], L):- atom_chars(C, T1), atom_chars(A, T2), buscar2(T2, T1), append(L, C, L), !.
+procesa(A, [C|L1], L):- atom_chars(C, T1), atom_chars(A, T2), buscar2(T2, T1), append(L, C, L), procesa(A, L1, L).
+
+2)
+
+borrar(X,[X|C],C).
+borrar(X,[Y|C],[Y|R]):-borrar(X,C,R).
+
+permutar([],[]).
+permutar(L,[X|C]):-borrar(X,L,R),permutar(R,C).
+
+matriz(M,L):-permutar(M,L),probar(L).
+
+probar([X1,X2,X3,Y1,Y2,Y3,Z1,Z2,Z3]):-R is X1+X2+X3,
+                                      R is Y1+Y2+Y3,
+                                      R is Z1+Z2+Z3,
+                                      R is X1+Y1+Z1,
+                                      R is X2+Y2+Z2,
+                                      R is X3+Y3+Z3,
+                                      R is X1+Y2+Z3,
+                                      R is X3+Y2+Z1.
+
+3)
+
+concatenar([],L,L).
+concatenar([X|C],L2,[X|L]):-concatenar(C,L2,L).
+
+oper(+).
+oper(-).
+oper(*).
+%oper(/).
+
+armar([X],[X]):-!.
+armar([X|L],[X,O|La]):-oper(O),armar(L,La).
+
+sublistas(L,X,Y):-concatenar(X,Y,L),X\=[],Y\=[].
+
+
+calc(P,[],P):-!.
+calc(P,[+,X|R],Res):-Pn is P+X,calc(Pn,R,Res).
+calc(P,[-,X|R],Res):-Pn is P-X,calc(Pn,R,Res).
+calc(P,[*,X|R],Res):-Pn is P*X,calc(Pn,R,Res).
+
+probar(L,Li):-sublistas(L,X,Y),arma(X,Xa),arma(Y,Ya),calc(Xa,C),calc(Ya,C),concatenar(Xa,[=],R),concatenar(R,Ya,Li).
+
+%Terminar
+
+4)
+
+validar([]).
+validar([X|C]):-not(pertenece(X,C)),validar(C),!.
+validar([X|C]):-pertenece(X,C),!,fail.
+
+concatenar([],L,L).
+concatenar([X|C],L2,[X|L]):-concatenar(C,L2,L).
+
+pertenece(X,[X|_]):-!.
+pertenece(X,[_|L]):-pertenece(X,L).
+
+elimR([],[]).
+elimR([X|C],L):-pertenece(X,C),!,elimR(C,L).
+elimR([X|C],[X|L]):-elimR(C,L). 
+
+union([],[],[]).
+union([],L,L):-validar(L),!.
+union(L,[],L):-validar(L),!.
+union(C1,C2,C):-validar(C1),validar(C2),concatenar(C1,C2,R),elimR(R,C).
+
+interseccion(_,[],[]).
+interseccion([],_,[]).
+interseccion([X|C1],C2,C):-validar([X|C1]),validar(C2),not(pertenece(X,C2)),interseccion(C1,C2,C),!.
+interseccion([X|C1],C2,[X|C]):-validar([X|C1]),validar(C2),pertenece(X,C2),interseccion(C1,C2,C).
+
+diferencia([],_,[]).
+diferencia([X|C1],C2,C):-validar([X|C1]),validar(C2),pertenece(X,C2),diferencia(C1,C2,C),!.
+diferencia([X|C1],C2,[X|C]):-validar([X|C1]),validar(C2),not(pertenece(X,C2)),diferencia(C1,C2,C).
+
+5)
+
+profundidad(nil,0):-!.
+profundidad(t(nil,_,nil),0):-!.
+profundidad(T,Pro):-T=t(I,_,D),profundidad(I,Pi),profundidad(D,Pd),Pii is Pi+1,Pdd is Pd+1,Pro is max(Pii,Pdd).
+
+peso_nivel(nil,_,0).
+peso_nivel(T,1,No):-T=t(_,No,_).
+
+peso_nivel(T,Ni,Peso):-profundidad(T,P),Ni=<P,T=t(I,_,D),Nii is Ni-1,peso_nivel(I,Nii,Piz),peso_nivel(D,Nii,Pde),Peso is Piz+Pde.
+
+%peso_nivel(T,Ni,Peso):-profundidad(T,P),Ni=<P,T=t(I,0,D),Nii is Ni-1,peso_nivel(I,Nii,Piz),peso_nivel(D,Nii,Pde),Peso is Piz+Pde.
+%peso_nivel(T,Ni,0):-profundidad(T,P),Ni=<P,T=t(I,_,D),Nii is Ni-1,(peso_nivel(I,Nii,0);peso_nivel(D,Nii,0)).
+
+%-------------------
+%Otros operadores
+
+minL([X],X):-!.
+minL([X|C],X):-minL(C,Y),X=<Y,!.
+minL([X|C],Y):-minL(C,Y),X>Y,!.
+
+quitar(_,[],[]).
+quitar(X,[X|C],C):-!.
+quitar(X,[Y|C],L):-X\=Y,quitar(X,C,L).
+
+ordenar([],[]):-!.
+ordenar(L,[X|C]):-minL(L,X),quitar(X,L,R),ordenar(R,C).

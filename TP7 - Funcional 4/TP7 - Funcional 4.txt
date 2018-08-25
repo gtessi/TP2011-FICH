@@ -1,0 +1,185 @@
+1)
+
+(define-struct punto (x y))
+
+(define distancia
+        (lambda (p1 p2)
+                (sqrt
+                      (+ (expt (- (punto-x p1) (punto-x p2)) 2)
+                         (expt (- (punto-y p1) (punto-y p2)) 2)
+                      )
+                )
+        )
+ )
+
+(distancia (make-punto 10 1) (make-punto 30 1))
+
+2)
+
+(define-struct punto (x y z))
+
+(define centro
+        (lambda (lista)
+                (if (null? lista)
+                    0
+                    (letrec ((cgx (lambda (lista)
+                                          (if (null? lista)
+                                              0
+                                              (+ (punto-x (car lista)) (cgx (cdr lista)))
+                                          )
+                                  )
+                             )
+                             (cgy (lambda (lista)
+                                          (if (null? lista)
+                                              0
+                                              (+ (punto-y (car lista)) (cgy (cdr lista)))
+                                          )
+                                  )
+                             )
+                             (cgz (lambda (lista)
+                                          (if (null? lista)
+                                              0
+                                              (+ (punto-z (car lista)) (cgz (cdr lista)))
+                                          )
+                                  )
+                             )
+                            )
+                            (list (/ (cgx lista) (length lista))
+                                  (/ (cgy lista) (length lista))
+                                  (/ (cgz lista) (length lista))
+                            )
+                    )
+                )
+        )
+ )
+
+3)
+
+(define-struct punto (x y))
+
+(define maximo
+        (lambda (lista)
+                (if (null? lista)
+                    0
+                    (if (>= (car lista) (maximo (cdr lista)))
+                        (car lista)
+                        (maximo (cdr lista))
+                    )
+                )
+        )
+ )
+
+(define distance2dv
+        (lambda (x y)
+                (sqrt (+ (expt (- (punto-x y) (punto-x x)) 2) (expt (- (punto-y y) (punto-y x)) 2)))
+        )
+ )
+
+(define mayor_distancia
+       (lambda (x y)
+               (if (null? y)
+                   '()
+                   (if (null? (cdr y))
+                       (distance2dv x (car y))
+                       (if (>= (distance2dv x (car y)) (mayor_distancia x (cdr y)))
+                           (distance2dv x (car y))
+                           (mayor_distancia x (cdr y))
+                       )
+                   )
+               )
+       )
+ )
+
+(define distancias
+        (lambda (lista)
+                (if (null? lista)
+                    0
+                    (maximo (map (lambda (x)
+                                         (mayor_distancia x lista)
+                                 )
+                                 lista
+                            )
+                    )
+                )
+        )
+ )
+
+4)
+
+(define i (open-input-file "D:/Server/archi.txt"))
+
+(define contpal
+        (lambda (a)
+                (if (eof-object? (read a))
+                    0
+                    (+ 1 (contpal a))
+                )
+        )
+ )
+
+(define contcar
+        (lambda (a)
+                (if (eof-object? (read-char a))
+                    0
+                    (+ 1 (contcar a))
+                )
+        )
+ )
+
+5)
+
+(define i (open-input-file "D:/Server/archi.txt"))
+
+(define mostrarpal
+        (lambda (a)
+                (define temp (read a))
+                (if (eof-object? temp)
+                    (display #\ )
+                    (begin
+                      (display temp)
+                      (display #\| )
+                      (mostrarpal a)
+                    )
+                )
+        )
+ )
+
+6)
+
+(define geringoso
+        (lambda ()
+                (togeringoso (read-char))
+        )
+ )
+
+(define togeringoso
+        (lambda (letra)
+                (if (equal? letra #\newline)
+                    (display #\newline)
+                    (if (or (equal? letra #\a) (equal? letra #\e) (equal? letra #\i) (equal? letra #\o) (equal? letra #\u))
+                            (begin
+                              (display letra)
+                              (display "p")
+                              (display letra)
+                              (geringoso)
+                            )
+                            (begin
+                              (display letra)
+                              (geringoso)
+                            )
+                    )
+                )
+        )
+ )
+
+7)
+
+(define encriptar
+        (lambda ()
+                (begin
+                  (display "ingrese una palabra clave")
+                  (toencriptar (read-char))
+                )
+        )
+ )
+

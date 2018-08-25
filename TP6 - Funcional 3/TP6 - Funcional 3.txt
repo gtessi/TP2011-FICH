@@ -1,0 +1,193 @@
+1)
+
+(define factorial
+        (lambda (x)
+                (if (eqv? 0 x)
+                    1
+                    (* x (factorial (- x 1)))
+                )
+        )
+ )
+
+2)
+
+(define largo
+        (lambda (x)
+                (if (null? x)
+                    0
+                    (+ 1 (largo (cdr x)))
+                )
+        )
+ )
+
+3)
+
+(define count-elem
+        (lambda (n l)
+                (if (null? l)
+                    0
+                    (if (eqv? (car l) n)
+                        (+ 1 (count-elem n (cdr l)))
+                        (count-elem n (cdr l))
+                    )
+                )
+        )
+ )
+
+4)
+
+(define subst
+        (lambda (x y l)
+                (if (null? l)
+                    '()
+                    (if (eqv? x (car l))
+                        (cons y (subst x y (cdr l)))
+                        (cons (car l) (subst x y (cdr l)))
+                    )
+                )
+        )
+ )
+
+5)
+
+(define elim-elem
+        (lambda (x l)
+                (if (null? l)
+                    '()
+                    (if (eqv? x (car l))
+                        (elim-elem x (cdr l))
+                        (cons (car l) (elim-elem x (cdr l)))
+                    )
+                )
+        )
+ )
+
+(define elem-lista
+        (lambda (x l)
+                (if (null? l)
+                    '()
+                    (if (eqv? x (car l))
+                        (cons x (elem-lista x (cdr l)))
+                        (elem-lista x (cdr l))
+                    )
+                )
+        )
+ )
+
+(define agrupar
+        (lambda (x)
+                (if (null? x)
+                    '()
+                    (cons (elem-lista (car x) x) (agrupar (elim-elem (car x) x))
+                )
+        )
+ )
+
+6)
+
+(define concatenar
+        (lambda (l1 l2)
+                (if (null? l1)
+                    l2
+                    (cons (car l1) (concatenar (cdr l1) l2))
+                )
+        )
+ )
+
+7)
+
+(define primer-num
+        (lambda (l)
+                (if (null? l)
+                    l
+                    (if (number? (car l))
+                        (car l)
+                        (primer-num (cdr l))
+                    )
+                )
+        )
+ )
+
+8)
+
+(define attach-at-end
+        (lambda (x l)
+                (if (null? l)
+                    (cons x '())
+                    (if (eqv? (car l) x)
+                        (attach-at-end x (cdr l))
+                        (cons (car l) (attach-at-end x (cdr l)))
+                    )
+                 )
+        )
+ )
+
+9)
+
+(define absoluto
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (if (< (car l) 0)
+                        (cons (* -1 (car l)) (absoluto (cdr l)))
+                        (cons (car l) (absoluto (cdr l)))
+                    )
+                )
+        )
+ )
+
+(define texto
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (cons (string->number (car l)) (texto (cdr l)))
+                )
+        )
+ )
+
+(define booleano
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (if (equal? "V" (car l))
+                        (cons 1 (booleano (cdr l)))
+                        (cons 0 (booleano (cdr l)))
+                    )
+                )
+         )
+ )
+
+(define conv-datos
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (if (equal? "D" (caar l))
+                        (cons (absoluto (cadar l)) (conv-datos (cdr l)))
+                        (if (equal? "T" (caar l))
+                            (cons (texto (cadar l)) (conv-datos (cdr l)))
+                            (cons (booleano (cadar l)) (conv-datos (cdr l)))
+                        )
+                    )
+                )
+        )
+ )
+
+10)
+
+(define distance2d
+        (lambda (x y)
+                (sqrt (+ (expt (- (car y) (car x)) 2) (expt (- (cdr y) (cdr x)) 2)))
+        )
+ )
+
+(define distancias
+        (lambda (l)
+                (if (null? l)
+                    '()
+                    (if (null? (cdr l))
+                        '()
+                        (cons (distance2d (car l) (cadr l)) (distancias (cdr l)))
+                    )
+                )
+        )
+ )
